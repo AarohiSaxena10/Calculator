@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            display: flex;
+            justify-content: center;
+        }
+        .card{
+            background-color: black;
+            height: 610px;
+            box-shadow: 4px 4px 10px black;
+            width: 27%;
+            display:flex;
+            flex-direction:column;
+        }
+        .input{
+            height: 30%;
+           border: 3px solid blue;
+           font-size: 50px;
+           color: white;
+        }
+        .button{
+            height: 70%;
+            
+        }
+        .first{
+            display: flex;
+        }
+        .first button{
+            margin: 20px 13px 13px 13px;
+            border-radius: 75px;
+            box-shadow: 2px 2px 10px rgb(207, 197, 197);
+            width: 20%;
+           height: 75px;
+           font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="input">
+            </div>
+            <div class="button">
+            <div class="first">
+                <button onclick="removeall()">Ac</button>
+                <button class="but">%</button>
+                <button class="but">/</button>
+                <button class="but">x</button>
+            </div>
+            <div class="first">
+                <button class="but">9</button>
+                <button class="but">8</button>
+                <button class="but">7</button>
+                <button class="but">-</button>
+            </div>
+            <div class="first">
+                <button class="but">4</button>
+                <button class="but">5</button>
+                <button class="but">6</button>
+                <button class="but">+</button>
+            </div>
+            <div class="first">
+                <button class="but">1</button>
+                <button class="but">2</button>
+                <button class="but">3</button>
+                <button onclick="equal()">=</button>
+            </div>
+            </div>
+            </div>
+    </div>
+    
+</body>
+<script>
+    const buttons=document.querySelectorAll(".but");
+    const show=document.getElementsByClassName("input")[0];
+  function removeall(){
+ show.innerHTML="";
+  }
+  function insert(event){
+    const name=event.target.innerText;
+    show.innerText+=name+'';
+  }
+buttons.forEach(key => {
+    key.addEventListener("click",insert);
+});
+function equal(){
+const val=show.innerText;
+const n=val.length;
+let op;
+let sec="";
+let first;
+for(let i=0;i<n;i++){
+    if(val[i]=="+"||val[i]=="%"||val[i]=="-"||val[i]=="x"||val[i]=="/"){
+        op=val[i];
+        first=sec;
+        sec="";
+    }
+    else{
+        sec=sec+val[i];
+    }
+}
+let output;
+if(op=="+")
+{
+    output=parseInt(first)+parseInt(sec);
+}
+else if(op=="-")
+{
+    output=parseInt(first)-parseInt(sec);
+}
+else if(op=="x")
+{
+    output=parseInt(first)*parseInt(sec);
+}
+else if(op=="/")
+{
+    output=parseInt(first)/parseInt(sec);
+}
+else{
+    output=parseInt(first)%parseInt(sec);
+}
+show.innerHTML=output;
+ }
+</script>
+</html>
