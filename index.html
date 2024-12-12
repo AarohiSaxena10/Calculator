@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        
         .container{
             display: flex;
             justify-content: center;
@@ -22,6 +21,7 @@
             height: 30%;
            font-size: 50px;
            color: white;
+           overflow-wrap: break-word;
         }
         .button{
             height: 70%;
@@ -37,7 +37,7 @@
            height: 50px;
            font-size: 30px;
         }
-       @media (max-width: 768px){
+        @media (max-width: 768px){
            conatiner{
                height:100%;}
            .card{
@@ -62,10 +62,10 @@
             </div>
             <div class="button">
             <div class="first">
-                <button onclick="removeall()">Ac</button>
+                <button onclick="removeall()">AC</button>
                 <button class="but">%</button>
                 <button class="but">/</button>
-                <button class="but">x</button>
+                <button class="but">*</button>
             </div>
             <div class="first">
                 <button class="but">9</button>
@@ -88,7 +88,7 @@
             <div class="first">
                 <button class="but">0</button>
                 <button class="but">.</button>
-                <button class="but">()</button>
+                <button onclick="bracket()">()</button>
                 <button onclick="back()"><-</button>
             </div>
             </div>
@@ -109,8 +109,35 @@
 buttons.forEach(key => {
     key.addEventListener("click",insert);
 });
+var flag=true;
+let nestedCount = 0;
+function bracket(){
+/* if(flag){
+    show.innerText+='(';
+    flag=false;
+}
+else{
+    show.innerText+=')';
+    flag=true;
+} */
+
+if (flag) {
+        show.innerText += '(';  // Add an opening bracket
+        nestedCount++;  // Increase nested level
+        flag = false;  // Set flag to false since we just added an open bracket
+    } else {
+        if (nestedCount > 0) {  // Only add a closing bracket if there is an open bracket
+            show.innerText += ')';  // Add a closing bracket
+            nestedCount--;  // Decrease nested level
+            flag = true;  // Set flag to true since we just added a closing bracket
+        }
+    }
+}
 function equal(){
-const val=show.innerText;
+ const val=show.innerText;
+ let output;
+ output=eval(val);
+ /*  
 if(val.length==1){
     show.innerText=val;
 }
@@ -129,7 +156,7 @@ for(let i=0;i<n;i++){
         sec=sec+val[i];
     }
 }
-let output;
+
 if(op=="+")
 {
     output=Number(first)+Number(sec);
@@ -148,9 +175,9 @@ else if(op=="/")
 }
 else{
     output=Number(first)%Number(sec);
-}
+} */
 show.innerHTML=output;}
- }
+ 
  function back(){
     show.innerHTML=show.innerText.slice(0,-1);
  }
