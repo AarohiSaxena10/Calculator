@@ -17,8 +17,8 @@
             display:flex;
             flex-direction:column;
         }
-        .input{
-            height: 30%;
+        .input,.out{
+            height: 15%;
            font-size: 50px;
            color: white;
            overflow-wrap: break-word;
@@ -26,10 +26,10 @@
         .button{
             height: 70%;
         }
-        .first{
+        .first,.sec,.thr,.four,.five{
             display: flex;
         }
-        .first button{
+        .first button,.sec button,.thr button,.four button,.five button{
             margin: 20px 13px 13px 13px;
             border-radius: 100px;
             box-shadow: 2px 2px 10px rgb(207, 197, 197);
@@ -37,17 +37,20 @@
            height: 50px;
            font-size: 30px;
         }
+        .first button:disabled,.five button:disabled{
+         background-color: white;
+         color:black;
+         box-shadow: 2px 2px 10px rgb(207, 197, 197);
+         width: 19%;
+        }
+      
         @media (max-width: 768px){
            conatiner{
-               height:80vh;
-               align-items:center;
-           }
+               height:100%;}
            .card{
                width:100%;
-               height:100%
+               height:100%;
                flex:1;
-               margin-top:50px;
-              
            }
         .input{
             height:30%;
@@ -64,6 +67,7 @@
         <div class="card">
             <div class="input">
             </div>
+            <div class="out"></div>
             <div class="button">
             <div class="first">
                 <button onclick="removeall()">AC</button>
@@ -71,25 +75,25 @@
                 <button class="but">/</button>
                 <button class="but">*</button>
             </div>
-            <div class="first">
+            <div class="sec">
                 <button class="but">9</button>
                 <button class="but">8</button>
                 <button class="but">7</button>
                 <button class="but">-</button>
             </div>
-            <div class="first">
+            <div class="thr">
                 <button class="but">4</button>
                 <button class="but">5</button>
                 <button class="but">6</button>
                 <button class="but">+</button>
             </div>
-            <div class="first">
+            <div class="four">
                 <button class="but">1</button>
                 <button class="but">2</button>
                 <button class="but">3</button>
                 <button onclick="equal()">=</button>
             </div>
-            <div class="first">
+            <div class="five">
                 <button class="but">0</button>
                 <button class="but">.</button>
                 <button onclick="bracket()">()</button>
@@ -103,84 +107,70 @@
 <script>
     const buttons=document.querySelectorAll(".but");
     const show=document.getElementsByClassName("input")[0];
+    const ans=document.getElementsByClassName("out")[0];
+
   function removeall(){
  show.innerHTML="";
+ ans.innerHTML="";
   }
+  const operatorButtons = document.querySelectorAll(".first button:not(:first-child)");
+  const dot=document.querySelector(".five button:nth-child(2)");
+  
+  function disableOperators() {
+  operatorButtons.forEach((button) => {
+    button.disabled = true;
+  });
+}
+
+function enableOperators() {
+  operatorButtons.forEach((button) => {
+    button.disabled = false;
+  });
+}
+
   function insert(event){
     const name=event.target.innerText;
+    if(name=='+'||name=='-'||name=='/'|name=='*'||name=='%'){
+        disableOperators();
+    event.target.disabled=false;
+ }
+ else if(name=='.'){
+        dot.disabled=true;
+    }
+ else{
+    enableOperators();
+    dot.disabled=false;
+ }
     show.innerText+=name+'';
+    const val=show.innerText;
+    ans.innerHTML=eval(val);
   }
+
 buttons.forEach(key => {
     key.addEventListener("click",insert);
 });
+
 var flag=true;
 let nestedCount = 0;
+
 function bracket(){
-/* if(flag){
+ if(flag){
     show.innerText+='(';
     flag=false;
 }
 else{
     show.innerText+=')';
     flag=true;
-} */
-
-if (flag) {
-        show.innerText += '(';  // Add an opening bracket
-        nestedCount++;  // Increase nested level
-        flag = false;  // Set flag to false since we just added an open bracket
-    } else {
-        if (nestedCount > 0) {  // Only add a closing bracket if there is an open bracket
-            show.innerText += ')';  // Add a closing bracket
-            nestedCount--;  // Decrease nested level
-            flag = true;  // Set flag to true since we just added a closing bracket
-        }
-    }
+} 
 }
+
 function equal(){
  const val=show.innerText;
  let output;
  output=eval(val);
- /*  
-if(val.length==1){
-    show.innerText=val;
+show.innerHTML=output;
+ans.innerHTML="";
 }
-else if(val!="")
-{const n=val.length;
-let op;
-let sec="";
-let first;
-for(let i=0;i<n;i++){
-    if(val[i]=="+"||val[i]=="%"||val[i]=="-"||val[i]=="x"||val[i]=="/"){
-        op=val[i];
-        first=sec;
-        sec="";
-    }
-    else{
-        sec=sec+val[i];
-    }
-}
-
-if(op=="+")
-{
-    output=Number(first)+Number(sec);
-}
-else if(op=="-")
-{
-    output=Number(first)-Number(sec);
-}
-else if(op=="x")
-{
-    output=Number(first)*Number(sec);
-}
-else if(op=="/")
-{
-    output=Number(first)/Number(sec);
-}
-else{
-    output=Number(first)%Number(sec);
-} */
-show.innerHTML=output;}
  
  function back(){
     show.innerHTML=show.innerText.slice(0,-1);
